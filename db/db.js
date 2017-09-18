@@ -46,9 +46,24 @@ const Message = db.define('message', {
 // });
 
 Message.sync({force: true}).then(() => {
-  return Message.create({
-    message: 'Let\'s do this thing!'
+  Message.create({
+    message: 'The key, my friend, is to not be picky. Observe.'
   });
+  Message.create({
+    message: 'So let\'s do this thing!'
+  });
+  Message.create({
+    message: 'A chef makes. A thief takes.'
+  });
+  Message.create({
+    message: 'Keep your stations clear or I will kill you!'
+  });
+  // Message.create({
+  //   message: 'You\'re in Paris now, baby. My town.'
+  // });
+  // Message.create({
+  //   message: 'Anyone can cook, but only the fearless can be great.'
+  // });
 });
 
 module.exports = {

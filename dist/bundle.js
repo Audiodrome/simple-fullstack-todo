@@ -22445,6 +22445,28 @@ var App = function (_React$Component) {
   }
 
   _createClass(App, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      fetch('/getmessages', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin'
+      }).then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        // console.log('all messages ', data);
+        _this2.setState({
+          todos: [].concat(_toConsumableArray(data))
+        });
+      }).catch(function (err) {
+        console.log('Massive error, unable to receive messages. ', err);
+      });
+    }
+  }, {
     key: 'handleClick',
     value: function handleClick() {
       this.setState(function (prevState) {
@@ -22479,8 +22501,8 @@ var App = function (_React$Component) {
         credentials: 'same-origin'
       }).then(function (response) {
         console.log('Status: ', response.status);
-      }, function (error) {
-        console.log;
+      }).catch(function (err) {
+        console.log('Massive error, message unable to send. ', err);
       });
 
       this.setState({
@@ -22492,11 +22514,11 @@ var App = function (_React$Component) {
   }, {
     key: 'removeTodo',
     value: function removeTodo(id) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.setState(function (prevState) {
         return {
-          todos: _this2.state.todos.filter(function (el) {
+          todos: _this3.state.todos.filter(function (el) {
             return el !== id;
           })
         };

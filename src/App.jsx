@@ -16,6 +16,26 @@ class App extends React.Component {
     this.removeTodo = this.removeTodo.bind(this);
   }
 
+  componentDidMount() {
+    fetch('/getmessages', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin'
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      // console.log('all messages ', data);
+      this.setState({
+        todos: [...data]
+      });
+    })
+    .catch(err => {
+      console.log('Massive error, unable to receive messages. ', err);
+    });
+  }
+
   handleClick() {
     this.setState(prevState => ({
       isToggleOn: !prevState.isToggleOn
@@ -42,10 +62,12 @@ class App extends React.Component {
         'Content-Type': 'application/json'
       },
       credentials: 'same-origin'
-    }).then(function(response) {
+    })
+    .then(function(response) {
       console.log('Status: ', response.status);
-    }, function(error) {
-      console.log
+    })
+    .catch(err => {
+      console.log('Massive error, message unable to send. ', err);
     });
 
     this.setState({

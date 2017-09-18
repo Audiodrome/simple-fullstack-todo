@@ -26,7 +26,15 @@ app.post('/addmessage', (req, res) => {
 
 app.get('/getmessages', (req, res) => {
   console.log('Great GET SUCCESS');
-  res.sendStatus(200);
+  db.Message.findAll().then(messages => {
+    // console.log('All messages ', messages[0].dataValues.message);
+    const msgs = [];
+    for (let i = 0; i < messages.length; i++) {
+      msgs.push(messages[i].dataValues.message);
+    }
+    console.log('what are msgs. ', msgs);
+    res.status(200).send(msgs);
+  })
 });
 
 app.use(express.static(path.join(__dirname, '/dist')));
