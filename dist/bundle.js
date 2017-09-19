@@ -22458,7 +22458,6 @@ var App = function (_React$Component) {
       }).then(function (response) {
         return response.json();
       }).then(function (data) {
-        // console.log('all messages ', data);
         _this2.setState({
           todos: [].concat(_toConsumableArray(data))
         });
@@ -22475,7 +22474,6 @@ var App = function (_React$Component) {
         };
       });
       event.preventDefault();
-      console.log('The link was clicked.');
     }
   }, {
     key: 'handleChange',
@@ -22491,6 +22489,8 @@ var App = function (_React$Component) {
   }, {
     key: 'addTodo',
     value: function addTodo(event) {
+      var _this3 = this;
+
       event.preventDefault();
       fetch('/addmessage', {
         method: 'POST',
@@ -22500,28 +22500,33 @@ var App = function (_React$Component) {
         },
         credentials: 'same-origin'
       }).then(function (response) {
-        console.log('Status: ', response.status);
+        _this3.setState({
+          todos: [_this3.state.todo].concat(_toConsumableArray(_this3.state.todos)),
+          todo: ''
+        });
       }).catch(function (err) {
         console.log('Massive error, message unable to send. ', err);
       });
-
-      this.setState({
-        todos: [this.state.todo].concat(_toConsumableArray(this.state.todos)),
-        todo: ''
-      });
-      console.log(this.state.todos);
     }
   }, {
     key: 'removeTodo',
-    value: function removeTodo(id) {
-      var _this3 = this;
+    value: function removeTodo(item) {
+      var _this4 = this;
 
-      this.setState(function (prevState) {
-        return {
-          todos: _this3.state.todos.filter(function (el) {
-            return el !== id;
+      fetch('/removemessage', {
+        method: 'DELETE',
+        body: JSON.stringify({ text: item }),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin'
+      }).then(function (response) {
+        console.log('Delete response: ', response);
+        _this4.setState({
+          todos: _this4.state.todos.filter(function (el) {
+            return el !== item;
           })
-        };
+        });
       });
     }
   }, {
@@ -22533,7 +22538,7 @@ var App = function (_React$Component) {
         _react2.default.createElement(
           'h1',
           null,
-          'First React Component'
+          'Things to do today'
         ),
         _react2.default.createElement(
           'a',

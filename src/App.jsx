@@ -26,7 +26,6 @@ class App extends React.Component {
     })
     .then((response) => response.json())
     .then((data) => {
-      // console.log('all messages ', data);
       this.setState({
         todos: [...data]
       });
@@ -41,7 +40,6 @@ class App extends React.Component {
       isToggleOn: !prevState.isToggleOn
     }));
     event.preventDefault();
-    console.log('The link was clicked.');
   }
 
   handleChange(event) {
@@ -63,30 +61,40 @@ class App extends React.Component {
       },
       credentials: 'same-origin'
     })
-    .then(function(response) {
-      console.log('Status: ', response.status);
+    .then(response => {
+      // return response.json() a promise to return the requested data.
+      this.setState({
+        todos: [this.state.todo, ...this.state.todos],
+        todo: ''
+      });
     })
+    // another .then to get response.json()
     .catch(err => {
       console.log('Massive error, message unable to send. ', err);
     });
-
-    this.setState({
-      todos: [this.state.todo, ...this.state.todos],
-      todo: ''
-    });
-    console.log(this.state.todos);
   }
 
-  removeTodo(id) {
-    this.setState(prevState => ({
-      todos: this.state.todos.filter(el => el !== id) 
-    }));
+  removeTodo(item) {
+    fetch('/removemessage', {
+      method: 'DELETE',
+      body: JSON.stringify({text: item}),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin'
+    })
+    .then(response => {
+      console.log('Delete response: ', response);
+      this.setState({
+        todos: this.state.todos.filter(el => el !== item) 
+      });
+    });
   }
 
   render() {
     return (
       <div>
-        <h1>First React Component</h1>
+        <h1>Things to do today</h1>
         <a href="#" onClick={this.handleClick}> Click me </a>
         <button onClick={this.handleClick}>
           {this.state.isToggleOn ? 'ON' : 'OFF'}

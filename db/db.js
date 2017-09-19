@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-
+const path = require('path');
 const db = new Sequelize('postgres://ystqjwcd:boNJiPMAo6srLr8sWOjRAkJquZ52mQFt@elmer.db.elephantsql.com:5432/ystqjwcd');
 
 db
@@ -69,3 +69,19 @@ Message.sync({force: true}).then(() => {
 module.exports = {
   Message
 }
+
+
+// var mysql = require('mysql');
+// var db = mysql.createConnection({
+//   user: 'student',
+//   password: 'student',
+//   database: 'todo'
+// });
+// db.connect(function(err) {
+//   if (err) {
+//     throw err;
+//   }
+//   console.log('todo database connected');
+// });
+
+// module.exports = db
